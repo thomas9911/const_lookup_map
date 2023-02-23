@@ -3,7 +3,7 @@ name = "const_lookup_map"
 version = "0.1.0"
 edition = "2021"
 description = "Rust map that can be defined in a const context."
-license = "The Unlicenced"
+license = "Unlicense"
 repository = "https://github.com/thomas9911/const_lookup_map"
 
 [dependencies]
