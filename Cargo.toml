@@ -2,7 +2,8 @@
 name = "const_lookup_map"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+description = "Rust map that can be defined in a const context."
+license = "The Unlicenced"
+repository = "https://github.com/thomas9911/const_lookup_map"
 
 [dependencies]

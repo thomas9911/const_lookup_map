@@ -1,22 +1,22 @@
 #![no_std]
 
 //! Rust map that can be defined in a const context.
-//! 
+//!
 //! There are two ways to create it:
-//! 
+//!
 //! ```rust
 //! use const_lookup_map::{ConstLookup, lookup};
-//! 
+//!
 //! const LOOKUP_MACRO: ConstLookup<3, &str, &str> = lookup! {
 //!     "best" => "better",
 //!     "test" => "testing",
 //!     "guessed" => "guessing",
 //! };
 //! ```
-//! 
+//!
 //! ```rust
 //! use const_lookup_map::ConstLookup;
-//! 
+//!
 //! pub const LOOKUP: ConstLookup<4, &str, &str> = ConstLookup::new(
 //!     ["bye", "hallo", "hey", "test"],
 //!     [
@@ -27,20 +27,20 @@
 //!     ],
 //! );
 //! ```
-//! 
+//!
 //! One note; The keys should be in order/sorted because the get method will use this to effienctly get the value. See [`ConstLookup::check_sorted`]
-//! 
+//!
 //! # Usage
-//! 
+//!
 //! ```rust
 //! use const_lookup_map::{ConstLookup, lookup};
-//! 
+//!
 //! const LOOKUP: ConstLookup<3, &str, &str> = lookup! {
 //!     "best" => "better",
 //!     "test" => "testing",
 //!     "guessed" => "guessing",
 //! };
-//! 
+//!
 //! fn my_function() {
 //!   assert_eq!(LOOKUP.get(&"best"), Some(&"better"));
 //!   assert_eq!(LOOKUP[&"best"], "better");
@@ -73,7 +73,8 @@ pub struct ConstLookup<const N: usize, K: Ord, V> {
 }
 
 impl<const N: usize, K: Ord, V> ConstLookup<N, K, V> {
-    pub const fn size(&self) -> usize {
+    /// Returns the number of elements in the map.
+    pub const fn len(&self) -> usize {
         N
     }
 
@@ -93,12 +94,14 @@ impl<const N: usize, K: Ord, V> ConstLookup<N, K, V> {
         is_sorted(&self.keys)
     }
 
+    /// Returns a reference to the value corresponding to the key.
     pub fn get(&self, key: &K) -> Option<&V> {
         let index = self.keys.binary_search(key).ok()?;
         self.values.get(index)
     }
 
-    pub fn contains(&self, key: &K) -> bool {
+    /// Returns true if the map contains a value for the specified key.
+    pub fn contains_key(&self, key: &K) -> bool {
         self.keys.binary_search(key).is_ok()
     }
 }
@@ -137,8 +140,6 @@ const LOOKUP: ConstLookup<4, &str, &str> = ConstLookup::new(
     ],
 );
 
-// #[allow(unused_assignments)]
-
 #[macro_export(local_inner_macros)]
 macro_rules! lookup {
     (@single $($x:tt)*) => (());
@@ -174,7 +175,7 @@ macro_rules! lookup {
 
 #[cfg(test)]
 const fn large() -> bool {
-    LOOKUP.size() > 100
+    LOOKUP.len() > 100
 }
 
 #[test]
